@@ -1,4 +1,5 @@
 function onReady() {
+  let toDos = JSON.parse( localStorage.getItem('toDos') ) || [];
   let id = toDos.length || 0;
   const addToDoForm = document.getElementById('addToDoForm');
   const newToDoText = document.getElementById('newToDoText');
@@ -15,14 +16,12 @@ function onReady() {
     return toDos.filter(toDo => toDo.id !== id);
   }
 
-  function renderTheUI() {
-      const deleteBtn = document.getElementById('deleteBtn');
-    };
+  function saveToDos() {
+    localStorage.setItem('toDos', JSON.stringify(toDos) );
   }
 
   function renderTheUI() {
     const toDoList = document.getElementById('toDoList');
-
     toDoList.textContent = '';
 
     toDos.forEach(function(toDo) {
@@ -30,6 +29,7 @@ function onReady() {
       const checkbox = document.createElement('input');
       checkbox.type = "checkbox";
       checkbox.checked = toDo.complete;
+
 
       const deleteBtn = document.createElement('button')
       deleteBtn.innerHTML = '<span>Delete</span>';
@@ -43,6 +43,7 @@ function onReady() {
 
       toDoList.appendChild(newLi);
       newLi.appendChild(checkbox);
+      toDoList.insertBefore(checkbox, newLi);
       newLi.appendChild(deleteBtn);
 
   deleteBtn.addEventListener('click', () => {
@@ -50,7 +51,6 @@ function onReady() {
       renderTheUI();
       saveToDos();
   });
-
 });
 }
 
@@ -65,7 +65,6 @@ function onReady() {
     renderTheUI();
     saveToDos();
 }
-
 
 window.onload = function () {
   onReady();
